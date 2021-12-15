@@ -1,25 +1,14 @@
-- name: Add roboshop user
+- name: Add roboshop app user
   ansible.builtin.user:
     name: roboshop
   when: APP_TYPE == "backend"
   register: app_user_info
 
-- name: Unarchive a file that needs to be downloaded.
-  ansible.builtin.unarchive:
-    src: https://github.com/roboshop-devops-project/{{COMPONENT}}/archive/main.zip
-    dest: /tmp
-    remote_src: yes
+- name: Include Download from GitHub
+  include_tasks: download-from-github.yml
+  when: APP_VERSION == ""
 
-- name: Remove exiting code
-  ansible.builtin.file:
-    path: "{{APP_LOCATION}}"
-    state: absent
-  when: APP_TYPE == "frontend" or APP_TYPE == "backend"
+- name: Include Download from Nexus
+  include_tasks: download-from-nexus.yml
+  when: APP_VERSION != ""
 
-- name: Copy App code
-  ansible.builtin.copy:
-    src: /tmp/{{COMPONENT}}-main/
-    dest: /home/roboshop/{{COMPONENT}}
-    remote_src: yes
-  become_user: "{{APP_USER}}"
-  when: APP_TYPE == "backend"
