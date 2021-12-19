@@ -2,7 +2,7 @@
   shell: set-hostname {{COMPONENT}}
 
 - name: Copy rsyslog conf
-  template:
+  ansible.builtin.template:
     src: rsyslog.conf
     dest: /etc/rsyslog.d/01-roboshop.conf
   when: APP_TYPE == "backend"
