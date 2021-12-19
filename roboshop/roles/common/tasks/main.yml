@@ -8,7 +8,7 @@
   when: APP_TYPE == "backend"
 
 - name: Restart rsyslog
-  systemd:
+  ansible.builtin.systemd:
     name: rsyslog
     state: restarted
   when: APP_TYPE == "backend"
