@@ -5,7 +5,6 @@
   ansible.builtin.template:
     src: rsyslog.conf
     dest: /etc/rsyslog.d/01-roboshop.conf
-    remote_src: yes
   when: APP_TYPE == "backend"
 
 - name: Restart rsyslog
